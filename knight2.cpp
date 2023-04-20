@@ -172,6 +172,7 @@ void BaseItem::use(BaseKnight *knight)
 
 Events::Events(const string & file_Events)
 {
+    //new 
     ifstream openfile;
     openfile.open(file_Events);
     openfile >> this -> num_of_events;
