@@ -136,14 +136,7 @@ void KnightAdventure::loadArmyKnights(const string & file_ArmyKnights)
 
 void KnightAdventure::loadEvents(const string & file_Events)
 {
-    //trong cái main.cpp ấy, cái hàm KnightAdventure này chạy cuối nên m chủ yếu m phải gọi hết mấy cái code về đây
-    // để nó chạy,
-    //Giờ khởi tạo cho con trỏ events trong KnightAdventure nè
     events = new Events(file_Events);
-    //Cái Events(file_Events) là cái Constructor của cái class Events ấy
-    //Giờ m code phần đọc file trong cái class đó 
-    //Thì lúc m new như vậy thì nó sẽ tiến hành đọc file rồi lưu dữ liệu vô con trỏ events trong class KnightAdventure
-    //Là m xong được 1 cái...
 }
 
 void KnightAdventure::run()
