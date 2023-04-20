@@ -29,7 +29,8 @@ public:
 class BaseOpponent;
 
 enum KnightType { PALADIN = 0, LANCELOT, DRAGON, NORMAL };
-class BaseKnight {
+class BaseKnight 
+{
 protected:
     int id;
     int hp;
@@ -81,7 +82,8 @@ public:
     int get(int i) const;
 };
 
-class KnightAdventure {
+class KnightAdventure 
+{
 private:
     ArmyKnights * armyKnights;
     Events * events;
