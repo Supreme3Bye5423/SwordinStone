@@ -1,5 +1,23 @@
 #include "knight2.h"
 
+/***BEGIN level0 calculator***/
+
+int level0(int eventRun, int eventID)
+{
+    return (eventRun + eventID) % 10 + 1;
+}
+
+/***END level0 calculator***/
+
+/***BEGIN fight 1 - 5***/
+
+void fight()
+{
+    
+}
+
+/***END fight 1 - 5***/
+
 /***BEGIN function checking Knight type***/
 
 //Check Paladin
@@ -29,6 +47,7 @@ bool lancelotCheck(int maxHP)
     return false;
 }
 
+//Check dragon
 bool dragonCheck(int maxHP)
 {
     if (maxHP < 100 || maxHP > 999)
@@ -143,9 +162,9 @@ BaseKnight* BaseKnight::create(int id, int maxhp, int level, int gil, int antido
     return temp;
 }
 
-bool ArmyKnights::fight(BaseOpponent*opponent)
+KnightType BaseKnight::returnType()
 {
-
+    return this -> knightType;
 }
 
 //Read armyKnight file
@@ -156,7 +175,6 @@ ArmyKnights::ArmyKnights(const string & file_armyknights)
     openfile.open(file_armyknights);
     openfile >> this -> numberofKnight;
     int hp, maxhp, level, gil, antidote, phoenixDownI;
-    BaseKnight ** Knight;
     Knight = new BaseKnight *[this -> numberofKnight];
     for (int Knightindex = 0; Knightindex < numberofKnight; Knightindex++)
     {
@@ -260,9 +278,77 @@ Normal::Normal(int id, int maxhp, int level, int gil, int antidote, int phoenixd
 
 /***END set new knight****/
 
+/***BEGIN set new Opponent ***/
+
+MadBear::MadBear(int gil, int baseDamage, int level0)
+{
+    this -> gil = gil;
+    this -> baseDamage = baseDamage;
+    this -> level0 = level0;
+}
+
+Bandit::Bandit(int gil, int baseDamage, int level0)
+{
+    this -> gil = gil;
+    this -> baseDamage = baseDamage;
+    this -> level0 = level0;
+}
+
+LordLupin::LordLupin(int gil, int baseDamage, int level0)
+{
+    this -> gil = gil;
+    this -> baseDamage = baseDamage;
+    this -> level0 = level0;
+}
+
+Elf::Elf(int gil, int baseDamage, int level0)
+{
+    this -> gil = gil;
+    this -> baseDamage = baseDamage;
+    this -> level0 = level0;
+}
+
+Troll::Troll(int gil, int baseDamage, int level0)
+{
+    this -> gil = gil;
+    this -> baseDamage = baseDamage;
+    this -> level0 = level0;
+}
+
+/***END set new Opponent***/
+
+/***BEGIN fight session ***/
+
+bool Paladin::fight(BaseOpponent *opponent)
+{
+
+}
+
+bool Lancelot::fight(BaseOpponent *opponent)
+{
+    
+}
+
+bool Dragon::fight(BaseOpponent *opponent)
+{
+    
+}
+
+bool Normal::fight(BaseOpponent *opponent)
+{
+    
+}
+
+/***END fight session ***/
+
+/***BEGIN Define for ***/
+
+/***END ***/
+
 /* * * BEGIN implementation of class KnightAdventure * * */
 
-KnightAdventure::KnightAdventure(){
+KnightAdventure::KnightAdventure()
+{
 
 }
 
@@ -291,6 +377,9 @@ void KnightAdventure::run()
         {
             case 1:
             {
+                MadBear *Bear;
+                Bear = new MadBear(100,10,level0(run,events -> events[run]));
+                //if (armyKnights -> Knight[armyKnights -> numberofKnight - 1] -> returnType() == )
                 break;
             }
             case 2:
