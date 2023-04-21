@@ -1,5 +1,90 @@
 #include "knight2.h"
 
+/***BEGIN killlastKnight***/
+
+void killastKnight(BaseKnight *&lastKnight,BaseKnight **&Knight, int &KnightQuantity)
+{
+    BaseKnight **newKnight;
+    KnightQuantity--;
+    newKnight = new BaseKnight*[KnightQuantity];
+    for (int run = 0; run < KnightQuantity; run++)
+    {
+        newKnight[run] = Knight[run];
+    }
+    delete [] Knight;
+    Knight = newKnight;
+    newKnight = nullptr;
+    lastKnight = Knight[KnightQuantity - 1];
+}
+
+/***END killlastKnight***/
+
+/***BEGIN revKnight***/
+
+void revKnight(BaseKnight *&lastKnight, BaseKnight **&Knight, int &KnightQuantity)
+{
+    if (lastKnight -> returnhp() == 0)
+    {
+        bool check = false;
+        for (int run = KnightQuantity - 1; run >= 0; run--)
+        {
+            if (Knight[run] -> returnphoenixdownI() != 0)
+            {
+                Knight[run] -> changeStat(Knight[run]->returnid(), Knight[run]->returnhp(), Knight[run]->returnLevel(), Knight[run] -> returngil(), Knight[run] -> returnantidote(), Knight[run] -> returnphoenixdownI() - 1);
+                lastKnight ->changeStat(Knight[run]->returnid(), Knight[run]->returnmaxhp(), Knight[run]->returnLevel(), Knight[run] -> returngil(), Knight[run] -> returnantidote(), Knight[run] -> returnphoenixdownI());
+                check = true;
+                break;
+            }
+        }
+        for (int run = KnightQuantity - 1; run >= 0; run--)
+        {
+            if (Knight[run] -> returngil() >= 100)
+            {
+                Knight[run] -> changeStat(Knight[run]->returnid(), Knight[run]->returnhp(), Knight[run]->returnLevel(), Knight[run] -> returngil() - 100, Knight[run] -> returnantidote(), Knight[run] -> returnphoenixdownI());
+                lastKnight ->changeStat(Knight[run]->returnid(), (Knight[run]->returnmaxhp())/2, Knight[run]->returnLevel(), Knight[run] -> returngil(), Knight[run] -> returnantidote(), Knight[run] -> returnphoenixdownI());
+                check = true;
+                break;
+            }
+        }
+        if (check == false)
+        {
+            killastKnight(lastKnight, Knight, KnightQuantity);
+        }
+    }
+}
+
+/***END revKnight***/
+
+/***BEGIN checksurvivor***/
+
+void checkSurv(BaseKnight *lastKnight, BaseOpponent *Opponenet,BaseKnight **Knight, int KnightQuantity)
+{
+    KnightType typeKnight;
+    typeKnight = lastKnight -> returnType();
+    revKnight(lastKnight, Knight, KnightQuantity);
+    if (typeKnight == PALADIN)
+    {
+        if (lastKnight ->returnhp() == 0)
+        {
+            
+        }
+    }
+    else if (typeKnight == LANCELOT)
+    {
+
+    }
+    else if (typeKnight == DRAGON)
+    {
+
+    }
+    else
+    {
+
+    }
+}
+
+/***END checksurvivor***/
+
 /***BEGIN level0 calculator***/
 
 int level0(int eventRun, int eventID)
@@ -11,9 +96,22 @@ int level0(int eventRun, int eventID)
 
 /***BEGIN fight 1 - 5***/
 
-void fight()
+void fight1to5(ArmyKnights * armyKnights,BaseKnight * lastKnight, int baseDame, int gel, int level0)
 {
-    
+    int levelKnight, HPKnight, newHP;
+    levelKnight = lastKnight -> returnLevel();
+    KnightType typeKnight;
+    typeKnight = lastKnight -> returnType();
+    HPKnight = lastKnight->returnhp();
+    if (levelKnight >= level0 || typeKnight == LANCELOT || typeKnight == PALADIN)
+    {
+        //Function to check the knight's gil;
+    }
+    else 
+    {
+        newHP = HPKnight - baseDame * (level0 - levelKnight);
+        lastKnight ->changeStat(lastKnight -> returnid(), HPKnight, levelKnight, lastKnight ->returngil(), lastKnight -> returnantidote(), lastKnight -> returnphoenixdownI());
+    }
 }
 
 /***END fight 1 - 5***/
@@ -116,28 +214,16 @@ string BaseKnight::toString() const {
     return s;
 }
 
-/*****/
-
-/* * * END implementation of class BaseKnight * * */
-
-/* * * BEGIN implementation of class ArmyKnights * * */
-void ArmyKnights::printInfo() const {
-    cout << "No. knights: " << this->count();
-    if (this->count() > 0) {
-        BaseKnight * lknight = lastKnight(); // last knight
-        cout << ";" << lknight->toString();
-    }
-    cout << ";PaladinShield:" << this->hasPaladinShield()
-        << ";LancelotSpear:" << this->hasLancelotSpear()
-        << ";GuinevereHair:" << this->hasGuinevereHair()
-        << ";ExcaliburSword:" << this->hasExcaliburSword()
-        << endl
-        << string(50, '-') << endl;
-}
-
-void ArmyKnights::printResult(bool win) const 
+BaseKnight * ArmyKnights::lastKnight() const
 {
-    cout << (win ? "WIN" : "LOSE") << endl;
+    if (this -> numberofKnight == 0)
+    {
+        return NULL;
+    }
+    else
+    {
+        return this -> Knight[this -> numberofKnight - 1];
+    }
 }
 
 BaseKnight* BaseKnight::create(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI)
@@ -167,6 +253,73 @@ KnightType BaseKnight::returnType()
     return this -> knightType;
 }
 
+int BaseKnight::returnLevel()
+{
+    return this -> level;
+}
+
+int BaseKnight::returnid()
+{
+    return this -> id;
+}
+
+int BaseKnight::returnhp()
+{
+    return this -> hp;
+}
+
+int BaseKnight::returnmaxhp()
+{
+    return this -> maxhp;
+}
+
+int BaseKnight::returngil()
+{
+    return this -> gil;
+}
+
+int BaseKnight::returnantidote()
+{
+    return this -> antidote;
+}
+
+int BaseKnight::returnphoenixdownI()
+{
+    return this -> phoenixdownI;
+}
+
+void BaseKnight::changeStat(int id, int hp, int level, int gil, int antidote, int phoenixdownI)
+{
+    this -> id = id;
+    this -> hp = hp;
+    this -> level = level;
+    this -> gil = gil;
+    this -> antidote = antidote;
+    this -> phoenixdownI = phoenixdownI;
+}
+
+/* * * END implementation of class BaseKnight * * */
+
+/* * * BEGIN implementation of class ArmyKnights * * */
+void ArmyKnights::printInfo() const {
+    cout << "No. knights: " << this->count();
+    if (this->count() > 0) {
+        BaseKnight * lknight = lastKnight(); // last knight
+        cout << ";" << lknight->toString();
+    }
+    cout << ";PaladinShield:" << this->hasPaladinShield()
+        << ";LancelotSpear:" << this->hasLancelotSpear()
+        << ";GuinevereHair:" << this->hasGuinevereHair()
+        << ";ExcaliburSword:" << this->hasExcaliburSword()
+        << endl
+        << string(50, '-') << endl;
+}
+
+void ArmyKnights::printResult(bool win) const 
+{
+    cout << (win ? "WIN" : "LOSE") << endl;
+}
+
 //Read armyKnight file
 
 ArmyKnights::ArmyKnights(const string & file_armyknights)
@@ -194,11 +347,6 @@ bool ArmyKnights::adventure(Events * events)
 }
 
 int ArmyKnights::count() const
-{
-
-}
-
-BaseKnight * ArmyKnights::lastKnight() const
 {
 
 }
@@ -317,34 +465,6 @@ Troll::Troll(int gil, int baseDamage, int level0)
 
 /***END set new Opponent***/
 
-/***BEGIN fight session ***/
-
-bool Paladin::fight(BaseOpponent *opponent)
-{
-
-}
-
-bool Lancelot::fight(BaseOpponent *opponent)
-{
-    
-}
-
-bool Dragon::fight(BaseOpponent *opponent)
-{
-    
-}
-
-bool Normal::fight(BaseOpponent *opponent)
-{
-    
-}
-
-/***END fight session ***/
-
-/***BEGIN Define for ***/
-
-/***END ***/
-
 /* * * BEGIN implementation of class KnightAdventure * * */
 
 KnightAdventure::KnightAdventure()
@@ -371,6 +491,10 @@ void KnightAdventure::loadEvents(const string & file_Events)
 //Event run
 void KnightAdventure::run()
 {
+    ArmyKnights * armyKnights;
+    armyKnights = this -> armyKnights;
+    BaseKnight * lastKnight;
+    lastKnight = armyKnights->lastKnight();
     for (int run = 0; run < events -> num_of_events; run++)
     {
         switch(events -> events[run])
@@ -379,7 +503,8 @@ void KnightAdventure::run()
             {
                 MadBear *Bear;
                 Bear = new MadBear(100,10,level0(run,events -> events[run]));
-                //if (armyKnights -> Knight[armyKnights -> numberofKnight - 1] -> returnType() == )
+                fight1to5(armyKnights, lastKnight, Bear -> baseDamage, Bear ->gil, level0(run,events -> events[run]));
+                checkSurv(lastKnight, Bear, armyKnights -> Knight, armyKnights -> numberofKnight);
                 break;
             }
             case 2:
