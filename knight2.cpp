@@ -70,9 +70,18 @@ bool ArmyKnights::fight(BaseOpponent*opponent)
 
 }
 
+//Read armyKnight file
+
 ArmyKnights::ArmyKnights(const string & file_armyknights)
 {
-
+    ifstream openfile;
+    openfile.open(file_armyknights);
+    int numberofKnight;
+    openfile >> numberofKnight;
+    for (int Knightquantity = 0; Knightquantity < numberofKnight; Knightquantity++)
+    {
+        
+    }
 }
 
 ArmyKnights::~ArmyKnights()
@@ -131,7 +140,7 @@ KnightAdventure:: ~KnightAdventure() {
 
 void KnightAdventure::loadArmyKnights(const string & file_ArmyKnights)
 {
-
+    armyKnights = new ArmyKnights(file_ArmyKnights);
 }
 
 void KnightAdventure::loadEvents(const string & file_Events)
@@ -139,9 +148,92 @@ void KnightAdventure::loadEvents(const string & file_Events)
     events = new Events(file_Events);
 }
 
+
+//Event run
 void KnightAdventure::run()
 {
-
+    for (int run = 0; run < events -> num_of_events; run++)
+    {
+        switch(events -> events[run])
+        {
+            case 1:
+            {
+                break;
+            }
+            case 2:
+            {
+                break;
+            }
+            case 3:
+            {
+                break;
+            }
+            case 4:
+            {
+                break;
+            }
+            case 5:
+            {
+                break;
+            }
+            case 6:
+            {
+                break;
+            }
+            case 7:
+            {
+                break;
+            }
+            case 8:
+            {
+                break;
+            }
+            case 9:
+            {
+                break;
+            }
+            case 10:
+            {
+                break;
+            }
+            case 11:
+            {
+                break;
+            }
+            case 112:
+            {
+                break;
+            }
+            case 113:
+            {
+                break;
+            }
+            case 114:
+            {
+                break;
+            }
+            case 95:
+            {
+                break;
+            }
+            case 96:
+            {
+                break;
+            }
+            case 97:
+            {
+                break;
+            }
+            case 98:
+            {
+                break;
+            }
+            case 99:
+            {
+                break;
+            }
+        }
+    }
 }
 
 /* * * END implementation of class KnightAdventure * * */
