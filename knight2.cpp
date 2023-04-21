@@ -1,5 +1,66 @@
 #include "knight2.h"
 
+/***BEGIN function checking Knight type***/
+
+//Check Paladin
+bool paladinCheck(int maxHP)
+{
+    if (maxHP < 2) 
+    {
+        return false;
+    }
+    int squareRoot = (int) sqrt(maxHP);
+    int i;
+    for (i = 2; i <= squareRoot; i++) {
+        if (maxHP % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+//Check lancelot
+bool lancelotCheck(int maxHP)
+{
+    if (maxHP == 888)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool dragonCheck(int maxHP)
+{
+    if (maxHP < 100 || maxHP > 999)
+    {
+        int * a, max = 0;
+        a = new int [3];
+        for (int i = 0; i < 3; i++)
+        {
+            a[i] = maxHP % 10;
+            maxHP /= maxHP;
+        }
+        if (pow(a[0],2) + pow(a[1],2) == pow(a[2],2))
+        {
+            return true;
+        }
+        else if (pow(a[0],2) + pow(a[2],2) == pow(a[1],2))
+        {
+            return true;
+        }
+        else if (pow(a[1],2) + pow(a[2],2) == pow(a[0],2))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+/***END function checking Knight type****/
+
 /* * * BEGIN implementation of class BaseBag * * */
 
 bool BaseBag::insertFirst(BaseItem * item)
@@ -62,7 +123,24 @@ void ArmyKnights::printResult(bool win) const
 
 BaseKnight* BaseKnight::create(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI)
 {
-
+    BaseKnight * temp = nullptr;
+    if (paladinCheck(maxhp) == true)
+    {   
+        temp = new Paladin(id, maxhp, level, gil, antidote, phoenixdownI);
+    }
+    else if (lancelotCheck(maxhp) == true)
+    {
+        temp = new Lancelot(id, maxhp, level, gil, antidote, phoenixdownI);
+    }
+    else if (dragonCheck(maxhp) == true)
+    {
+        temp = new Dragon(id, maxhp, level, gil, antidote, phoenixdownI);
+    }
+    else
+    {
+        temp = new Normal(id, maxhp, level, gil, antidote, phoenixdownI);
+    }
+    return temp;
 }
 
 bool ArmyKnights::fight(BaseOpponent*opponent)
@@ -76,11 +154,14 @@ ArmyKnights::ArmyKnights(const string & file_armyknights)
 {
     ifstream openfile;
     openfile.open(file_armyknights);
-    int numberofKnight;
-    openfile >> numberofKnight;
-    for (int Knightquantity = 0; Knightquantity < numberofKnight; Knightquantity++)
+    openfile >> this -> numberofKnight;
+    int hp, maxhp, level, gil, antidote, phoenixDownI;
+    BaseKnight ** Knight;
+    Knight = new BaseKnight *[this -> numberofKnight];
+    for (int Knightindex = 0; Knightindex < numberofKnight; Knightindex++)
     {
-        
+        openfile >> hp >> level >> phoenixDownI >> gil >> antidote;
+        Knight[Knightindex] = BaseKnight::create(Knightindex + 1, hp, level, gil, antidote, phoenixDownI);
     }
 }
 
@@ -126,6 +207,58 @@ bool ArmyKnights::hasExcaliburSword() const
 
 
 /* * * END implementation of class ArmyKnights * * */
+
+/***BEGIN set new knight****/
+
+Paladin::Paladin(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI)
+{
+    this -> id = id;
+    this -> hp = maxhp;
+    this -> maxhp = maxhp;
+    this -> level = level;
+    this -> gil = gil;
+    this -> phoenixdownI = phoenixdownI;
+    this -> antidote = antidote;
+    this -> knightType = PALADIN;
+}
+
+Lancelot::Lancelot(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI)
+{
+    this -> id = id;
+    this -> hp = maxhp;
+    this -> maxhp = maxhp;
+    this -> level = level;
+    this -> gil = gil;
+    this -> phoenixdownI = phoenixdownI;
+    this -> antidote = antidote;
+    this -> knightType = LANCELOT;
+}
+
+Dragon::Dragon(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI)
+{
+    this -> id = id;
+    this -> hp = maxhp;
+    this -> maxhp = maxhp;
+    this -> level = level;
+    this -> gil = gil;
+    this -> phoenixdownI = phoenixdownI;
+    this -> antidote = antidote;
+    this -> knightType = DRAGON;
+}
+
+Normal::Normal(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI)
+{
+    this -> id = id;
+    this -> hp = maxhp;
+    this -> maxhp = maxhp;
+    this -> level = level;
+    this -> gil = gil;
+    this -> phoenixdownI = phoenixdownI;
+    this -> antidote = antidote;
+    this -> knightType = NORMAL;
+}
+
+/***END set new knight****/
 
 /* * * BEGIN implementation of class KnightAdventure * * */
 

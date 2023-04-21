@@ -12,6 +12,10 @@ class BaseItem;
 class BaseOpponent;
 class BaseBag;
 class KnightAdventure;
+class Paladin;
+class Lancelot;
+class Dragon;
+class Normal;
 
 enum ItemType {/* TODO: */};
 
@@ -34,6 +38,7 @@ protected:
     int level;
     int gil;
     int antidote;
+    int phoenixdownI;
     BaseBag * bag;
     KnightType knightType;
 
@@ -42,7 +47,10 @@ public:
     string toString() const;
 };
 
-class ArmyKnights {
+class ArmyKnights 
+{
+public:
+    int numberofKnight;
 public:
     ArmyKnights (const string & file_armyknights);
     ~ArmyKnights();
@@ -91,6 +99,36 @@ public:
     void loadArmyKnights(const string & file_ArmyKnights);
     void loadEvents(const string & file_Events);
     void run();
+};
+
+//Different type of Knight
+
+class Paladin:public BaseKnight
+{
+    public:
+        Paladin(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI);
+        ~Paladin();
+};
+
+class Lancelot:public BaseKnight
+{
+    public:
+        Lancelot(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI);
+        ~Lancelot();
+};
+
+class Dragon:public BaseKnight
+{
+    public:
+        Dragon(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI);
+        ~Dragon();
+};
+
+class Normal:public BaseKnight
+{
+    public:
+        Normal(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI);
+        ~Normal();
 };
 
 #endif // __KNIGHT2_H__
