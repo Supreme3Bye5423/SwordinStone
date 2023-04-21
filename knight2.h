@@ -5,10 +5,6 @@
 
 // #define DEBUG
 
-
-// tại mấy ông thày hình như sắp xếp mấy cái class này lộn xộn
-/*nên lúc đầu t cũng chạy k được */
-
 class Events;
 class BaseKnight;
 class ArmyKnights;

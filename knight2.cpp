@@ -165,7 +165,7 @@ void BaseItem::use(BaseKnight *knight)
 
 Events::Events(const string & file_Events)
 {
-    //new 
+    //Đọc file
     ifstream openfile;
     openfile.open(file_Events);
     openfile >> this -> num_of_events;
@@ -173,7 +173,6 @@ Events::Events(const string & file_Events)
     for (int i = 0; i < this -> num_of_events; i++)
     {
         openfile >> this -> events[i];
-        cout << this -> events[i];
     }
 }
 
