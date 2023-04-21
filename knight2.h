@@ -56,7 +56,16 @@ protected:
 public:
     static BaseKnight * create(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI);
     string toString() const;
+    int returnLevel();
+    int returnid();
+    int returnhp();
+    int returnmaxhp();
+    int returngil();
+    int returnantidote();
+    int returnphoenixdownI();
     KnightType returnType();
+
+    void changeStat(int id, int hp, int level, int gil, int antidote, int phoenixdownI);
 };
 
 class ArmyKnights 
@@ -108,7 +117,6 @@ private:
 public:
     KnightAdventure();
     ~KnightAdventure(); // TODO:
-
     void loadArmyKnights(const string & file_ArmyKnights);
     void loadEvents(const string & file_Events);
     void run();
@@ -121,7 +129,6 @@ class Paladin:public BaseKnight
     public:
         Paladin(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI);
         ~Paladin();
-        bool fight(BaseOpponent * opponent);
 };
 
 class Lancelot:public BaseKnight
@@ -129,7 +136,6 @@ class Lancelot:public BaseKnight
     public:
         Lancelot(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI);
         ~Lancelot();
-        bool fight(BaseOpponent * opponent);
 };
 
 class Dragon:public BaseKnight
@@ -137,7 +143,6 @@ class Dragon:public BaseKnight
     public:
         Dragon(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI);
         ~Dragon();
-        bool fight(BaseOpponent * opponent);
 };
 
 class Normal:public BaseKnight
@@ -145,7 +150,6 @@ class Normal:public BaseKnight
     public:
         Normal(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI);
         ~Normal();
-        bool fight(BaseOpponent * opponent);
 };
 
 //Different type of opponent
