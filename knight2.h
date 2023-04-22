@@ -35,6 +35,7 @@ public:
 class BaseOpponent
 {
     public:
+        int id;
         int gil;
         int baseDamage;
         int level0;
@@ -76,7 +77,7 @@ public:
 public:
     ArmyKnights (const string & file_armyknights);
     ~ArmyKnights();
-    bool fight(BaseOpponent * opponent);
+    bool fight(BaseOpponent * opponent, ArmyKnights *armyKnights, int run, Events *events);
     bool adventure (Events * events);
     int count() const;
     BaseKnight * lastKnight() const;
