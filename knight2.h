@@ -74,11 +74,15 @@ class ArmyKnights
 public:
     int numberofKnight;
     BaseKnight ** Knight;
+    bool PaladinShield = false;
+    bool LancelotSpear = false;
+    bool GuinevereHair = false;
+    bool ExcaliburSword = false;
 public:
     ArmyKnights (const string & file_armyknights);
     ~ArmyKnights();
-    bool fight(BaseOpponent * opponent, ArmyKnights *armyKnights, int run, Events *events);
-    bool adventure (Events * events);
+    bool fight(BaseOpponent * opponent, ArmyKnights *armyKnights);
+    bool adventure (Events * events, int run);
     int count() const;
     BaseKnight * lastKnight() const;
 
@@ -159,35 +163,30 @@ class MadBear:public BaseOpponent
 {
     public:
         MadBear(int gil, int baseDamage, int level0);
-        ~MadBear();
 };
 
 class Bandit:public BaseOpponent
 {
     public:
         Bandit(int gil, int baseDamage, int level0);
-        ~Bandit();
 };
 
 class LordLupin:public BaseOpponent
 {
     public:
         LordLupin(int gil, int baseDamage, int level0);
-        ~LordLupin();
 };
 
 class Elf:public BaseOpponent
 {
     public:
         Elf(int gil, int baseDamage, int level0);
-        ~Elf();
 };
 
 class Troll:public BaseOpponent
 {
     public:
         Troll(int gil, int baseDamage, int level0);
-        ~Troll();
 };
 
 #endif // __KNIGHT2_H__
