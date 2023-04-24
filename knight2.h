@@ -26,10 +26,24 @@ class Troll;
 enum ItemType {/* TODO: */};
 
 class BaseBag {
-public:
-    virtual bool insertFirst(BaseItem * item);
-    virtual BaseItem * get(ItemType itemType);
-    virtual string toString() const;
+    public:
+
+        struct Item
+        {
+            BaseItem *Stuff;
+            Item *next;
+        };
+
+        struct Link_list
+        {
+            Item *First = nullptr;
+            Item *Last = nullptr;
+        };
+    public:
+        virtual bool insertFirst(BaseItem * item);
+        virtual BaseItem * get(ItemType itemType);
+        virtual string toString() const;
+        void bagCreate(Link_list & list);
 };
 
 class BaseOpponent
@@ -54,6 +68,7 @@ protected:
     int phoenixdownI;
     BaseBag * bag;
     KnightType knightType;
+    int maxInvent;
 public:
     static BaseKnight * create(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI);
     string toString() const;
@@ -64,6 +79,8 @@ public:
     int returngil();
     int returnantidote();
     int returnphoenixdownI();
+    int returnMaxinvent();
+    void addGil(int gilAdd);
     KnightType returnType();
 
     void changeStat(int id, int hp, int level, int gil, int antidote, int phoenixdownI);
@@ -94,11 +111,13 @@ public:
     void printInfo() const;
     void printResult(bool win) const;
 };
-
+enum itemID {ANTIDOTE = 0, PHOENIXDI, PHOENIXDII, PHOENIXDIII, PHOENIXDIV};
 class BaseItem {
-public:
-    virtual bool canUse ( BaseKnight * knight ) = 0;
-    virtual void use ( BaseKnight * knight ) = 0;
+    public:
+        itemID ID;
+    public:
+        virtual bool canUse ( BaseKnight * knight ) = 0;
+        virtual void use ( BaseKnight * knight ) = 0;
 };
 
 class Events {
@@ -107,7 +126,7 @@ public:
     int * events;
 public:
     Events(const string & file_Events);
-    
+    void Durian(ArmyKnights *armyKnights);
     ~Events();
     int count() const;
     int get(int i) const;

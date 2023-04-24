@@ -89,14 +89,44 @@ void fight1to5(ArmyKnights * armyKnights,BaseKnight * lastKnight, BaseOpponent *
     HPKnight = lastKnight->returnhp();
     if (levelKnight >= opponent->level0 || typeKnight == LANCELOT || typeKnight == PALADIN)
     {
-        lastKnight->changeStat(lastKnight -> returnid(), lastKnight->returnhp(), levelKnight, lastKnight ->returngil() + opponent->gil, lastKnight -> returnantidote(), lastKnight -> returnphoenixdownI());
+        int i = armyKnights->numberofKnight - 2, change = lastKnight->returngil() + opponent->gil - 999;
+        if (change > 0)
+        {
+            lastKnight->addGil(999);
+            while (change > 0 && i >= 0)
+            {
+                int temp = armyKnights->Knight[i]->returngil();
+                armyKnights->Knight[i]->addGil(change);
+                change = temp + change - 999;
+                i--;
+            }
+        }
+        else
+        {
+            lastKnight->addGil(opponent->gil);
+        }
     }
     else 
     {
         newHP = HPKnight - opponent->baseDamage * (opponent->level0 - levelKnight);
         if (newHP > 0)
         {
-            lastKnight ->changeStat(lastKnight -> returnid(), newHP, levelKnight, lastKnight ->returngil() + opponent->gil, lastKnight -> returnantidote(), lastKnight -> returnphoenixdownI());
+            int i = armyKnights->numberofKnight - 2, change = lastKnight->returngil() + opponent->gil - 999;
+            if (change > 0)
+            {
+                lastKnight->addGil(999);
+                while (change > 0 && i >= 0)
+                {
+                    int temp = armyKnights->Knight[i]->returngil();
+                    armyKnights->Knight[i]->addGil(change);
+                    change = temp + change - 999;
+                    i--;
+                }
+            }
+            else
+            {
+                lastKnight->addGil(opponent->gil);
+            }
         }
         else
         {
@@ -265,6 +295,15 @@ int BaseKnight::returnantidote()
 int BaseKnight::returnphoenixdownI()
 {
     return this -> phoenixdownI;
+}
+
+void BaseKnight::addGil(int gilAdd)
+{
+    this -> gil += gilAdd;
+    if (this -> gil > 999)
+    {
+        this -> gil = 999;
+    }
 }
 
 void BaseKnight::changeStat(int id, int hp, int level, int gil, int antidote, int phoenixdownI)
@@ -436,6 +475,7 @@ Lancelot::Lancelot(int id, int maxhp, int level, int gil, int antidote, int phoe
     this -> phoenixdownI = phoenixdownI;
     this -> antidote = antidote;
     this -> knightType = LANCELOT;
+    this -> maxInvent = 16;
 }
 
 Dragon::Dragon(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI)
@@ -448,6 +488,7 @@ Dragon::Dragon(int id, int maxhp, int level, int gil, int antidote, int phoenixd
     this -> phoenixdownI = phoenixdownI;
     this -> antidote = antidote;
     this -> knightType = DRAGON;
+    this -> maxInvent = 14;
 }
 
 Normal::Normal(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI)
@@ -460,6 +501,7 @@ Normal::Normal(int id, int maxhp, int level, int gil, int antidote, int phoenixd
     this -> phoenixdownI = phoenixdownI;
     this -> antidote = antidote;
     this -> knightType = NORMAL;
+    this -> maxInvent = 19;
 }
 
 /***END set new knight****/
@@ -596,6 +638,8 @@ void KnightAdventure::run()
             }
             case 9:
             {
+                events->Durian(armyKnights);
+                armyKnights->printInfo();
                 break;
             }
             case 10:
@@ -638,6 +682,11 @@ void KnightAdventure::run()
             }
             case 98:
             {
+                if (armyKnights->PaladinShield == true & armyKnights->LancelotSpear == true && armyKnights->GuinevereHair == true)
+                {
+                    armyKnights->ExcaliburSword = true;
+                }
+                armyKnights->printInfo();
                 break;
             }
             case 99:
@@ -700,6 +749,7 @@ Events::Events(const string & file_Events)
 
 Events::~Events()
 {
+
 }
 
 int Events::count() const
@@ -710,6 +760,14 @@ int Events::count() const
 int Events::get(int i) const
 {
 
+}
+
+void Events::Durian(ArmyKnights *armyKnights)
+{
+    for(int i = 0; i < armyKnights->numberofKnight; i++)
+    {
+        armyKnights->Knight[i]->changeStat(armyKnights->Knight[i]->returnid(), armyKnights->Knight[i]->returnmaxhp(),armyKnights->Knight[i]->returnLevel(), armyKnights->Knight[i]->returngil(), armyKnights->Knight[i]->returnantidote(), armyKnights->Knight[i]->returnphoenixdownI());
+    }
 }
 
 /***END implementation of class Events***/
