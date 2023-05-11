@@ -29,6 +29,12 @@ class PhoenixDI;
 class PhoenixDII;
 class PhoenixDIII;
 class PhoenixDIV;
+class Antidote;
+class PhoenixDI;
+class PhoenixDII;
+class PhoenixDIII;
+class PhoenixDIV;
+class Ultimecia;
 
 struct Item
 {
@@ -46,6 +52,7 @@ public:
         Item *Last = nullptr;
     };
     Link_list list;
+    int maxInvent;
     int numofItem = 0;
     int antidote = 0;
     int PhoenixI = 0;
@@ -53,14 +60,13 @@ public:
     int PhoenixIII = 0;
     int PhoenixIV = 0;
 public:
-    // virtual bool insertFirst(BaseItem * item);
-    // virtual BaseItem * get(ItemType itemType);
+    virtual bool insertFirst(BaseItem * item);
+    virtual BaseItem * get(ItemType itemType);
     virtual string toString() const;
     void addHead(ItemType ID, int maxIvent);
-    bool canAdd(ItemType ID, int maxIvent);
-    void item_to_Head(int index);
+    bool canAdd(BaseItem *item);
+    void item_to_Head(ItemType ID);
     void eraseItem();
-    void useItem(BaseKnight *lastKnight);
     void firstAdd(ItemType ID);
 };
 
@@ -86,10 +92,11 @@ protected:
     int gil;
     int antidote;
     int phoenixdownI;
+    double baseDame;
     KnightType knightType;
-    int maxInvent;
-    int countItem = 0;
     BaseBag * bag;
+public:
+    int countItem = 0;
 public:
     static BaseKnight * create(int id, int maxhp, int level, int gil, int antidote, int phoenixdownI);
     string toString() const;
@@ -100,7 +107,7 @@ public:
     int returngil();
     int returnantidote();
     int returnphoenixdownI();
-    int returnMaxinvent();
+    double returnbaseDame();
     BaseBag *returnBag();
     void addGil(int gilAdd);
     KnightType returnType();
@@ -109,7 +116,7 @@ public:
     void changeHP(int HP);
     void changeLevel(int level);
     void changeGil(int gil);
-    bool revKnight(BaseKnight *lastKnight, BaseKnight **&Knight, int &KnightQuantity);
+    bool revKnight();
 };
 
 class ArmyKnights 
@@ -143,13 +150,18 @@ public:
     void meetNina();
     bool fightOmega(BaseOpponent *opponent);
     bool fightHades(BaseOpponent *opponent);
+    void fightUltimecia(Ultimecia *opponent);
+    void killKnightindex(int index);
+    void addPhoenixII();
+    void addPhoenixIII();
+    void addPhoenixIV();
 };
 class BaseItem {
     public:
         ItemType itemID;
     public:
-        // virtual bool canUse ( BaseKnight * knight ) = 0;
-        // virtual void use ( BaseKnight * knight ) = 0;
+         virtual bool canUse ( BaseKnight * knight ) = 0;
+         virtual void use ( BaseKnight * knight ) = 0;
 };
 
 class Events {
@@ -266,40 +278,53 @@ class Hades:public BaseOpponent
         Hades();
 };
 
-//Different type of potion
-class Antidote:public BaseItem
+class Ultimecia:public BaseOpponent
 {
     public:
-        // bool canUse ( BaseKnight * knight );
-        // void use ( BaseKnight * knight );
+        int hp;
+    public:
+        Ultimecia();
+};
+
+//Different type of potion
+class Antidote : public BaseItem
+{
+    public:
+    Antidote();
+        bool canUse ( BaseKnight * knight );
+        void use ( BaseKnight * knight );
 };
 
 class PhoenixDI:public BaseItem
 {
     public:
-        // bool canUse ( BaseKnight * knight );
-        // void use ( BaseKnight * knight );
+        PhoenixDI();
+         bool canUse ( BaseKnight * knight );
+         void use ( BaseKnight * knight );
 };
 
 class PhoenixDII:public BaseItem
 {
     public:
-        // bool canUse ( BaseKnight * knight );
-        // void use ( BaseKnight * knight );
+         bool canUse ( BaseKnight * knight );
+         void use ( BaseKnight * knight );
+         PhoenixDII();
 };
 
 class PhoenixDIII:public BaseItem
 {
     public:
-        // bool canUse ( BaseKnight * knight );
-        // void use ( BaseKnight * knight );
+         bool canUse ( BaseKnight * knight );
+         void use ( BaseKnight * knight );
+         PhoenixDIII();
 };
 
 class PhoenixDIV:public BaseItem
 {
     public:
-        // bool canUse ( BaseKnight * knight );
-        // void use ( BaseKnight * knight );
+         bool canUse ( BaseKnight * knight );
+         void use ( BaseKnight * knight );
+         PhoenixDIV();
 };
 
 #endif // __KNIGHT2_H__

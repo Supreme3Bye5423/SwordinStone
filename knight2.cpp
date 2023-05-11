@@ -1,4 +1,4 @@
-#include "knight2.h";
+#include "knight2.h"
 
 /***BEGIN function checking Knight type***/
 
@@ -58,40 +58,22 @@ bool dragonCheck(int maxHP)
 
 /***END function checking Knight type****/
 
+
+
 /* * * BEGIN implementation of class BaseBag * * */
 
-void BaseBag::useItem(BaseKnight *lastKnight)
+BaseItem *BaseBag::get(ItemType itemType)
 {
-    if (list.First->Stuff->itemID == PHOENIXDI)
+    Item *searching = list.First;
+    while (searching != nullptr)
     {
-        lastKnight->changeHP(lastKnight->returnmaxhp());
-    }
-    else if (list.First->Stuff->itemID == PHOENIXDII)
-    {
-        lastKnight->changeHP(lastKnight->returnmaxhp());
-    }
-    else if (list.First->Stuff->itemID == PHOENIXDIII)
-    {
-        if (lastKnight->returnhp() <= 0)
+        if (searching->Stuff->itemID == itemType)
         {
-            lastKnight->changeHP(lastKnight->returnmaxhp()/3);
+            return searching->Stuff;
         }
-        else
-        {
-            lastKnight->changeHP(lastKnight->returnhp() + lastKnight->returnmaxhp()/4);
-        }
+        searching = searching->next;
     }
-    else if (list.First->Stuff->itemID == PHOENIXDIV)
-    {
-        if (lastKnight->returnhp() <= 0)
-        {
-            lastKnight->changeHP(lastKnight->returnmaxhp()/2);
-        }
-        else
-        {
-            lastKnight->changeHP(lastKnight->returnhp() + lastKnight->returnmaxhp()/5);
-        }
-    }
+    return nullptr;
 }
 
 void BaseBag::eraseItem()
@@ -116,250 +98,125 @@ void BaseBag::eraseItem()
     {
         PhoenixIV--;
     }
+    Item *temp;
+    temp = list.First;
     list.First = list.First->next;
+    delete temp;
     numofItem--;
 }
 
-bool BaseBag::canAdd(ItemType ID, int maxInvent)
+bool BaseBag::canAdd(BaseItem *item)
 {
     if (numofItem < maxInvent || maxInvent == -1)
     {
-        if (ID == ANTIDOTE)
+        if (item->itemID == 0)
         {
-            if (antidote < 5)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            bool check = antidote < 5 ? true : false;
+            return check;
         }
-        else if (ID == PHOENIXDI)
+        else if (item->itemID == 1)
         {
-            if (PhoenixI < 5)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            bool check = PhoenixI < 5 ? true : false;
+            return check;
         }
-        else if (ID == PHOENIXDII)
+        else
         {
-            if (PhoenixII < 5)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else if (ID == PHOENIXDIII)
-        {
-            if (PhoenixIII < 5)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else if (ID == PHOENIXDIV)
-        {
-            if (PhoenixIV < 5)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return true;
         }
     }
-    else 
+    else
     {
         return false;
     }
 }
 
-void BaseBag::addHead(ItemType ID, int maxInvent)
+void BaseBag::item_to_Head(ItemType ID)
 {
-    Item *item;
-    item = new Item;
-    if (ID == PHOENIXDI)
-    {
-        if (canAdd(ID, maxInvent) == true)
-        {
-            if (list.First == nullptr)
-            {
-                item->Stuff = new PhoenixDI;
-                item->Stuff->itemID = PHOENIXDI;
-                item->next = nullptr;
-                list.First = item;
-                list.Last = item;
-                numofItem++;
-                PhoenixI++;
-            }
-            else
-            {
-                item->Stuff = new PhoenixDI;
-                item->Stuff->itemID = PHOENIXDI;
-                item ->next = list.First;
-                list.First = item;
-                numofItem++;
-                PhoenixI++;
-            }
-        }
-    }
-    else if (ID == ANTIDOTE)
-    {
-        if (canAdd(ID, maxInvent) == true)
-        {
-            if (list.First == nullptr)
-            {
-                item->Stuff = new Antidote;
-                item->Stuff->itemID = ANTIDOTE;
-                item->next = nullptr;
-                list.First = item;
-                list.Last = item;
-                numofItem++;
-                antidote++;
-            }
-            else
-            {
-                item->Stuff = new Antidote;
-                item->Stuff->itemID = ANTIDOTE;
-                item ->next = list.First;
-                list.First = item;
-                numofItem++;
-                antidote++;
-            }
-        }
-    }
-    else if (ID == PHOENIXDII)
-    {
-        if (canAdd(ID, maxInvent) == true)
-        {
-            if (list.First == nullptr)
-            {
-                item->Stuff = new PhoenixDII;
-                item->Stuff->itemID = PHOENIXDII;
-                item->next = nullptr;
-                list.First = item;
-                list.Last = item;
-                numofItem++;
-                PhoenixII++;
-            }
-            else
-            {
-                item->Stuff = new PhoenixDII;
-                item->Stuff->itemID = PHOENIXDII;
-                item ->next = list.First;
-                list.First = item;
-                numofItem++;
-                PhoenixII++;
-            }
-        }
-    }
-    else if (ID == PHOENIXDIII)
-    {
-        if (canAdd(ID, maxInvent) == true)
-        {
-            if (list.First == nullptr)
-            {
-                item->Stuff = new PhoenixDIII;
-                item->Stuff->itemID = PHOENIXDII;
-                item->next = nullptr;
-                list.First = item;
-                list.Last = item;
-                numofItem++;
-                PhoenixIII++;
-            }
-            else
-            {
-                item->Stuff = new PhoenixDIII;
-                item->Stuff->itemID = PHOENIXDIII;
-                item ->next = list.First;
-                list.First = item;
-                numofItem++;
-                PhoenixIII++;
-            }
-        }
-    }
-    else if (ID == PHOENIXDIV)
-    {
-        if (canAdd(ID, maxInvent) == true)
-        {
-            if (list.First == nullptr)
-            {
-                item->Stuff = new PhoenixDIV;
-                item->Stuff->itemID = PHOENIXDIV;
-                item->next = nullptr;
-                list.First = item;
-                list.Last = item;
-                numofItem++;
-                PhoenixIV++;
-            }
-            else
-            {
-                item->Stuff = new PhoenixDIV;
-                item->Stuff->itemID = PHOENIXDIV;
-                item ->next = list.First;
-                list.First = item;
-                numofItem++;
-                PhoenixIV++;
-            }
-        }
-    }
-}
-
-void BaseBag::item_to_Head(int index)
-{
-   Item *check;
-   if (numofItem > 1)
-   {
-        if (index != 0)
-        {
-            check = list.First;
-            for(int i = 0; i < index; i++)
-            {
-                check = check->next;
-            }
-            BaseItem *temp;
-            temp = list.First->Stuff;
-            list.First->Stuff = check->Stuff;
-            check->Stuff = temp;
-            temp = nullptr;
-            delete temp;
-        }
+   Item *searching;
+   BaseItem *index = get(ID);
+   searching = list.First;
+   while (searching != NULL) {
+       if (searching->Stuff->itemID == ID) {
+           break;
+       }
+       searching = searching->next;
    }
-   check = nullptr;
-   delete check;
+   BaseItem * tempItem = list.First -> Stuff;
+   list.First -> Stuff = searching -> Stuff;
+   searching -> Stuff = tempItem;
+   eraseItem();
+   tempItem = nullptr;
+   delete tempItem;
 }
 
-// bool BaseBag::insertFirst(BaseItem * item)
-// {
-
-// }
-
-// BaseItem* BaseBag::get(ItemType ItemType)
-// {
-
-// }
+ bool BaseBag::insertFirst(BaseItem * item)
+ {
+    Item *itemInsert;
+    itemInsert = new Item;
+    if (canAdd(item) == true)
+    {
+        if (item->itemID == 0){
+            BaseItem * temp = new Antidote();
+            itemInsert->Stuff = item;
+            antidote++;
+        }
+        else if (item->itemID == 1)
+        {
+            BaseItem * temp = new PhoenixDI();
+            itemInsert->Stuff = temp;
+            PhoenixI++;
+        }
+        else if (item->itemID == 2)
+        {
+            BaseItem * temp = new PhoenixDII();
+            itemInsert->Stuff = temp;
+            PhoenixII++;
+        }
+        else if (item->itemID == 3)
+        {
+            BaseItem * temp = new PhoenixDIII();
+            itemInsert->Stuff = temp;
+            PhoenixIII++;
+        }
+        else
+        {
+            BaseItem * temp = new PhoenixDIV();
+            itemInsert->Stuff = temp;
+            PhoenixIV++;
+        }
+        if (list.First == NULL)
+        {
+            list.First = itemInsert;
+            itemInsert->next = nullptr;
+            list.Last = itemInsert;
+            itemInsert = nullptr;
+            delete itemInsert;
+        }
+        else
+        {
+            itemInsert -> next = list.First;
+            list.First = itemInsert;
+            itemInsert = nullptr;
+            delete itemInsert;
+        }
+        numofItem++;
+        return true;
+    }
+    return false;
+ }
 
 string BaseBag::toString() const
 {
     string typeString[5] = {"Antidote", "PhoenixI", "PhoenixII", "PhoenixIII", "PhoenixIV"};
     string s(""), temp("");
     Item *Searching = list.First;
+    int count = 0;
     while (Searching != NULL)
     {
-        temp += "," + typeString[Searching->Stuff->itemID];
+        if (count == numofItem - 1) temp = temp + typeString[Searching->Stuff->itemID];
+        else temp = temp + typeString[Searching->Stuff->itemID] + ',';
         Searching = Searching->next;
+        count++;
     }
     s += "Bag[count=" + to_string(numofItem) + ";" + temp + "]";
     return s;
@@ -398,68 +255,24 @@ void BaseKnight::changeHP(int HP)
     }
 }
 
-bool BaseKnight::revKnight(BaseKnight *lastKnight, BaseKnight **&Knight, int &KnightQuantity)
+bool BaseKnight::revKnight()
 {
-    bool Check = false;
-    Item *check;
-    if (lastKnight->hp > 0)
+    Item * item = bag -> list.First;
+    while (item != nullptr && item -> Stuff -> itemID == ANTIDOTE){
+        item = item -> next;
+    }
+    if (item != nullptr){
+        item -> Stuff ->use(this);
+        bag->item_to_Head(item->Stuff->itemID);
+    }
+    if (hp > 0) return true;
+    else if (gil >= 100 && hp < 0)
     {
+        hp = maxhp / 2;
+        gil -= 100;
         return true;
     }
-    while (lastKnight->bag->PhoenixI > 0 ||lastKnight->bag->PhoenixII > 0 || lastKnight->bag->PhoenixIII > 0 || lastKnight->bag->PhoenixIV > 0)
-    {
-        check = lastKnight->bag->list.First;
-        int index = 0;
-        bool temp = lastKnight->hp > 0 ? true : false, exists = false;   
-        if (temp == true)
-        {
-            return true;
-        }     
-        while(check != nullptr)
-        {
-            if (check->Stuff->itemID == PHOENIXDI || check->Stuff->itemID == PHOENIXDII || check->Stuff->itemID == PHOENIXDIII || check->Stuff->itemID == PHOENIXDIV)
-            {
-                exists = true;
-                break;
-            }
-            index++;
-            check = check->next;
-        }
-        if (exists == true)
-        {
-            lastKnight->bag->item_to_Head(index);
-            check = lastKnight->returnBag()->list.First;
-            if (check->Stuff->itemID == PHOENIXDI)
-            {
-                lastKnight->bag->useItem(lastKnight);
-                lastKnight->bag->eraseItem();
-                return true;
-            }
-            else 
-            {
-                lastKnight->bag->useItem(lastKnight);
-                lastKnight->bag->eraseItem();
-            }
-        }
-        else
-        {
-            break;
-        }
-    }
-    if (Check == true)
-    {
-        return true;
-    }
-    while (lastKnight->returngil() >= 100 && lastKnight->returnhp() <= 0)
-    {
-        lastKnight->changeHP(lastKnight->maxhp/2);
-        lastKnight->changeGil(lastKnight->gil - 100);
-        if (lastKnight->returnhp() > 0)
-        {
-            return true;
-        }
-    }
-    return false;
+        return false;
 }
 
 string BaseKnight::toString() const {
@@ -554,110 +367,241 @@ BaseBag *BaseKnight::returnBag()
     return this -> bag;
 }
 
-int BaseKnight::returnMaxinvent()
-{
-    return this -> maxInvent;
-}
-
 void BaseKnight::firstAdd()
 {
-    if (phoenixdownI > 5)
+    for (int i = 0; i < phoenixdownI; i++)
     {
-        for (int i = 0; i < 5; i++)
+        if (i == 5)
         {
-            bag->addHead(PHOENIXDI,maxInvent);
+            break;
         }
+        BaseItem *item;
+        item = new PhoenixDI();
+        bag->insertFirst(item);
+        item = nullptr;
+        delete item;
     }
-    else
+    if (knightType != DRAGON)
     {
-        for (int i = 0; i < phoenixdownI; i++)
+        for (int i = 0; i < antidote; i++)
         {
-            bag->addHead(PHOENIXDI, maxInvent);
-        }
-    }
-    if (this -> knightType != DRAGON)
-    {
-        if (this -> antidote > 5)
-        {
-            for (int i = 0; i < 5; i++)
+            if (i == 5)
             {
-                bag->addHead(ANTIDOTE, maxInvent);
+                break;
             }
-        }
-        else
-        {
-            for (int i = 0; i < this->returnantidote(); i++)
-            {
-                bag->addHead(ANTIDOTE, maxInvent);
-            }
+            BaseItem *item;
+            item = new Antidote();
+            bag->insertFirst(item);
+            item = nullptr;
+            delete item;
         }
     }
 }
 
 void BaseKnight::useotPhoenix(BaseKnight *lastKnight)
 {
-    Item *check = bag->list.First;
-    int index = 0;
-    if (hp < maxhp / 4)
+    Item *searching;
+    if (lastKnight -> hp < lastKnight -> maxhp /4)
     {
-        if (bag->PhoenixII > 0 || bag->PhoenixIII > 0 || bag->PhoenixIV > 0)
+        searching = bag->list.First;
+        while (searching != NULL)
         {
-            while (check != nullptr)
+            if (searching->Stuff->itemID == 2 || searching->Stuff->itemID == 3 || searching->Stuff->itemID == 4)
             {
-                if (check->Stuff->itemID == PHOENIXDII || check->Stuff->itemID == PHOENIXDIII || check->Stuff->itemID == PHOENIXDIV)
-                {
-                    break;
-                }
-                index++;
-                check = check->next;
+                break;
             }
-            bag->item_to_Head(index);
-            bag->useItem(lastKnight);
-            bag->eraseItem();
+            searching = searching->next;
         }
+        if (searching != nullptr)
+        {
+            searching->Stuff->use(lastKnight);
+            lastKnight->bag->item_to_Head(searching->Stuff->itemID);
+        }
+        searching = nullptr;
+        delete searching;
     }
-    else if (hp < maxhp/3)
+    else if (lastKnight -> hp < lastKnight -> maxhp / 3)
     {
-        if (bag->PhoenixIII > 0 || bag->PhoenixIV > 0)
+        searching = bag->list.First;
+        while (searching != NULL)
         {
-            while (check != nullptr)
+            if (searching->Stuff->itemID == 3 || searching->Stuff->itemID == 4)
             {
-                if (check->Stuff->itemID == PHOENIXDIII || check->Stuff->itemID == PHOENIXDIV)
-                {
-                    break;
-                }
-                index++;
-                check = check->next;
+                break;
             }
-            bag->item_to_Head(index);
-            bag->useItem(lastKnight);
-            bag->eraseItem();
+            searching = searching->next;
         }
+        if (searching != nullptr)
+        {
+            searching->Stuff->use(lastKnight);
+            lastKnight->bag->item_to_Head(searching->Stuff->itemID);
+        }
+        searching = nullptr;
+        delete searching;
     }
-    else if (hp > 0 && hp < maxhp/2)
+    else if (hp < maxhp/2)
     {
-        if (bag->PhoenixIV > 0)
+        searching = bag->list.First;
+        while (searching != NULL)
         {
-            while (check != nullptr)
+            if (searching->Stuff->itemID == 4)
             {
-                if (check->Stuff->itemID == PHOENIXDIV)
-                {
-                    break;
-                }
-                index++;
-                check = check->next;
+                break;
             }
-            bag->item_to_Head(index);
-            bag->useItem(lastKnight);
-            bag->eraseItem();
+            searching = searching->next;
         }
+        if (searching != nullptr)
+        {
+            searching->Stuff->use(lastKnight);
+            lastKnight->bag->item_to_Head(searching->Stuff->itemID);
+        }
+        searching = nullptr;
+        delete searching;
     }
 }
 
+double BaseKnight::returnbaseDame()
+{
+    return this -> baseDame;
+}
 
 /* * * END implementation of class BaseKnight * * */
 
 /* * * BEGIN implementation of class ArmyKnights * * */
+
+void ArmyKnights::addPhoenixIV()
+{
+    BaseItem *item;
+    item = new PhoenixDIV();
+    int index = numberofKnight - 1;
+    for(index; index >= 0; index--)
+    {
+        if(Knight[index]->returnBag()->canAdd(item) == true)
+        {
+            break;
+        }
+    }
+    if (index >= 0)
+    {
+        Knight[index]->returnBag()->insertFirst(item);
+    }
+    item = nullptr;
+    delete item;
+}
+
+void ArmyKnights::addPhoenixIII()
+{
+    BaseItem *item;
+    item = new PhoenixDIII();
+    int index = numberofKnight - 1;
+    for(index; index >= 0; index--)
+    {
+        if(Knight[index]->returnBag()->canAdd(item) == true)
+        {
+            break;
+        }
+    }
+    if (index >= 0)
+    {
+        Knight[index]->returnBag()->insertFirst(item);
+    }
+    item = nullptr;
+    delete item;
+}
+
+void ArmyKnights::addPhoenixII()
+{
+    BaseItem *item;
+    item = new PhoenixDII();
+    int index = numberofKnight - 1;
+    for(index; index >= 0; index--)
+    {
+        if(Knight[index]->returnBag()->canAdd(item) == true)
+        {
+            break;
+        }
+    }
+    if (index >= 0)
+    {
+        Knight[index]->returnBag()->insertFirst(item);
+    }
+    item = nullptr;
+    delete item;
+}
+
+void ArmyKnights::killKnightindex(int index)
+{
+    if (index == numberofKnight - 1)
+    {
+        killastKnight();
+    }
+    else
+    {
+        BaseKnight **newKnight, **temp;
+        newKnight = new BaseKnight * [numberofKnight - 1];
+        for (int i = 0; i < index; i++)
+        {
+            newKnight[i] = Knight[i];
+        }
+        for (int i = index; i < numberofKnight - 1; i++)
+        {
+            newKnight[i] = Knight[i+1];
+        }
+        numberofKnight--;
+        temp = Knight;
+        Knight = newKnight;
+        delete temp;
+        newKnight = nullptr;
+        delete newKnight;
+    }
+}
+
+void ArmyKnights::fightUltimecia(Ultimecia *opponent)
+{
+    if (ExcaliburSword != true)
+    {
+        if (PaladinShield == true && LancelotSpear == true && GuinevereHair == true)
+        {
+            int temp = numberofKnight;
+            for(int i = temp - 1; i >= 0; i--)
+            {
+                if (Knight[i]->returnType() != NORMAL)
+                {
+                    int Dame = Knight[i]->returnbaseDame() * Knight[i]->returnhp() * Knight[i]->returnLevel();
+                    opponent->hp -= Dame;
+                    if (opponent->hp > 0)
+                    {
+                        killKnightindex(i);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            if (opponent->hp > 0)
+            {
+                int temp = numberofKnight;
+                for(int i = 0; i < temp; i++)
+                {
+                    killastKnight();
+                }
+            }
+        }
+        else
+        {
+            int temp = numberofKnight;
+            for (int i = 0; i < temp; i++)
+            {
+                killastKnight();
+            }
+        }
+    }
+    else
+    {
+        opponent->hp = 0;
+    }
+}
 
 bool ArmyKnights::fightHades(BaseOpponent *opponent)
 {
@@ -696,7 +640,7 @@ void ArmyKnights::FightQueen(BaseOpponent *opponent)
     if (lastKnight()->returnLevel() >= opponent->level0)
     {
         int i = numberofKnight - 1, Money;
-        Money = lastKnight()->returngil()*2;
+        Money = lastKnight()->returngil();
         while (i >= 0)
         {
             if (999 - Knight[i]->returngil() >= Money)
@@ -739,7 +683,7 @@ void ArmyKnights::killastKnight()
 
 void ArmyKnights::Fight1to5(BaseOpponent *opponent)
 {
-    if (lastKnight()->returnType() == PALADIN || lastKnight()->returnType() == LANCELOT || lastKnight()->returnLevel() > opponent->level0)
+    if (lastKnight()->returnType() == PALADIN || lastKnight()->returnType() == LANCELOT || lastKnight()->returnLevel() >= opponent->level0)
     {
         int i = numberofKnight - 1, Money;
         Money = opponent->gil;
@@ -761,30 +705,7 @@ void ArmyKnights::Fight1to5(BaseOpponent *opponent)
     else
     {
         int newHP = lastKnight()->returnhp() - opponent->baseDamage*(opponent->level0 - lastKnight()->returnLevel());
-        if (newHP > 0)
-        {
-            lastKnight()->changeHP(newHP);
-            int i = numberofKnight - 1, Money;
-            Money = opponent->gil;
-            while (i >= 0)
-            {
-                if (999 - Knight[i]->returngil() >= Money)
-                {
-                    Knight[i]->addGil(Money);
-                    break;
-                }
-                else
-                {
-                    Money -= 999 - Knight[i]->returngil();
-                    Knight[i]->addGil(999 - Knight[i]->returngil());
-                }
-                i--;
-            }
-        }
-        else
-        {
-            lastKnight()->changeHP(newHP);
-        }
+        lastKnight()->changeHP(newHP);
     }
 }
 
@@ -890,19 +811,31 @@ bool ArmyKnights::fight(BaseOpponent * opponent)
     }
     else if (opponent->id == 99)
     {
-
+        Ultimecia *evilWitch;
+        evilWitch = new Ultimecia();
+        fightUltimecia(evilWitch);
     }
     //Check last Knight
-    bool checkLKnight = lastKnight()->revKnight(lastKnight(), Knight, numberofKnight);
-    if (checkLKnight == true)
+    if (opponent->id != 99)
     {
-        lastKnight()->useotPhoenix(lastKnight());
-        return true;
-    }
-    else
-    {
-        killastKnight();
-        return false;
+        if (lastKnight()->returnhp() > 0)
+        {
+            lastKnight()->useotPhoenix(lastKnight());
+            return true;
+        }
+        else
+        {
+            bool check = lastKnight()->revKnight();
+            if (check == true)
+            {
+                return true;
+            }
+            else
+            {
+                killastKnight();
+                return false;
+            }
+        }
     }
 }
 
@@ -970,8 +903,9 @@ Paladin::Paladin(int id, int maxhp, int level, int gil, int antidote, int phoeni
     this -> phoenixdownI = phoenixdownI;
     this -> antidote = antidote;
     this -> knightType = PALADIN;
-    this -> maxInvent = -1;
+    this->baseDame = 0.06;
     bag = new BaseBag();
+    this -> bag -> maxInvent = -1;
     firstAdd();
 }
 
@@ -985,8 +919,9 @@ Lancelot::Lancelot(int id, int maxhp, int level, int gil, int antidote, int phoe
     this -> phoenixdownI = phoenixdownI;
     this -> antidote = antidote;
     this -> knightType = LANCELOT;
-    this -> maxInvent = 16;
+    this->baseDame = 0.05;
     bag = new BaseBag();
+    this -> bag -> maxInvent = 16;
     firstAdd();
 }
 
@@ -999,8 +934,9 @@ Dragon::Dragon(int id, int maxhp, int level, int gil, int antidote, int phoenixd
     this -> gil = gil;
     this -> phoenixdownI = phoenixdownI;
     this -> knightType = DRAGON;
-    this -> maxInvent = 14;
+    this->baseDame = 0.075;
     bag = new BaseBag();
+    this -> bag -> maxInvent = 14;
     firstAdd();
 }
 
@@ -1014,8 +950,8 @@ Normal::Normal(int id, int maxhp, int level, int gil, int antidote, int phoenixd
     this -> phoenixdownI = phoenixdownI;
     this -> antidote = antidote;
     this -> knightType = NORMAL;
-    this -> maxInvent = 19;
     bag = new BaseBag();
+    this -> bag -> maxInvent = 19;
     firstAdd();
 }
 
@@ -1085,6 +1021,12 @@ Hades::Hades()
     this -> id = 11;
 }
 
+Ultimecia::Ultimecia()
+{
+    this -> id = 99;
+    this -> hp = 5000;
+}
+
 /***END set new Opponent***/
 
 /* * * BEGIN implementation of class KnightAdventure * * */
@@ -1112,8 +1054,6 @@ void KnightAdventure::loadEvents(const string & file_Events)
 //Event run
 void KnightAdventure::run()
 {
-    ArmyKnights * armyKnights;
-    armyKnights = this -> armyKnights;
     BaseKnight * lastKnight;
     lastKnight = armyKnights->lastKnight();
     bool checkCont;
@@ -1213,14 +1153,17 @@ void KnightAdventure::run()
             }
             case 112:
             {
+                armyKnights->addPhoenixII();
                 break;
             }
             case 113:
             {
+                armyKnights->addPhoenixIII();
                 break;
             }
             case 114:
             {
+                armyKnights->addPhoenixIV();
                 break;
             }
             case 95:
@@ -1251,6 +1194,10 @@ void KnightAdventure::run()
             }
             case 99:
             {
+                BaseOpponent *Evilwitch;
+                Evilwitch = new Ultimecia();
+                armyKnights->fight(Evilwitch);
+                delete Evilwitch;
                 break;
             }
         }
@@ -1278,21 +1225,6 @@ void KnightAdventure::run()
 }
 
 /* * * END implementation of class KnightAdventure * * */
-
-/***BEGIN implementation of class BaseItem***/
-
-// bool BaseItem::canUse(BaseKnight *knight)
-// {
-
-// }
-
-// void BaseItem::use(BaseKnight *knight)
-// {
-
-// }
-
-// ***END implementation of class BaseItem***/
-
 
 /***BEGIN implementation of class Events***/
 
@@ -1342,19 +1274,10 @@ void Tornbery::Curse(BaseKnight *lastKnight)
 {
     if (lastKnight->returnBag()->antidote > 0)
     {
-        Item *item = lastKnight->returnBag()->list.First;
-        int index = 0;
-        while (item != nullptr)
-        {
-            if (item->Stuff->itemID == ANTIDOTE)
-            {
-                break;
-            }
-            index++;
-            item = item->next;
-        }
-        lastKnight->returnBag()->item_to_Head(index);
-        lastKnight->returnBag()->eraseItem();
+        BaseItem *index;
+        index = lastKnight->returnBag()->get(ANTIDOTE);
+        index->use(lastKnight);
+        lastKnight->returnBag()->item_to_Head(ANTIDOTE);
     }
     else
     {
@@ -1378,3 +1301,117 @@ void Tornbery::Curse(BaseKnight *lastKnight)
 }
 
 /***END implementation of class BaseOpponent***/
+
+
+/***BEGIN all subclass of BaseItem***/
+
+//PhoenixI
+PhoenixDI::PhoenixDI()
+{
+    itemID = PHOENIXDI;
+}
+
+bool PhoenixDI::canUse(BaseKnight *knight)
+{
+    return (knight->returnhp() <= 0) && (knight->returnBag()->PhoenixI > 0);
+}
+
+void PhoenixDI::use(BaseKnight *knight)
+{
+    if (canUse(knight) == true)
+    {
+        knight->changeHP(knight->returnmaxhp());
+    }
+}
+
+//PhoenixII
+PhoenixDII::PhoenixDII()
+{
+    itemID = PHOENIXDII;
+}
+
+bool PhoenixDII::canUse(BaseKnight *knight)
+{
+    return (knight->returnhp() < knight->returnmaxhp()/4) && (knight->returnBag()->PhoenixII > 0);
+}
+
+void PhoenixDII::use(BaseKnight *knight)
+{
+    if (canUse(knight) == true)
+    {
+        knight->changeHP(knight->returnmaxhp());
+    }
+}
+
+//PhoenixIII
+PhoenixDIII::PhoenixDIII()
+{
+    itemID = PHOENIXDIII;
+}
+
+bool PhoenixDIII::canUse(BaseKnight *knight)
+{
+    return (knight->returnhp() < knight->returnmaxhp() / 3) || (knight->returnhp() <= 0) && (knight->returnBag()->PhoenixIII > 0);
+}
+
+void PhoenixDIII::use(BaseKnight *knight)
+{
+    if (canUse(knight) == true)
+    {
+        if (knight->returnhp() <= 0)
+        {
+            knight->changeHP(knight->returnmaxhp()/3);
+        }
+        else
+        {
+            knight->changeHP(knight->returnhp() + knight->returnmaxhp()/4);
+        }
+    }
+}
+
+//PhoenixIV
+PhoenixDIV::PhoenixDIV()
+{
+    itemID = PHOENIXDIV;
+}
+
+bool PhoenixDIV::canUse(BaseKnight *knight)
+{
+    return (knight->returnhp() <= 0) || (knight->returnhp() < knight->returnmaxhp() / 2) && (knight->returnBag()->PhoenixIV > 0);
+}
+
+void PhoenixDIV::use(BaseKnight *knight)
+{
+    if (canUse(knight) == true)
+    {
+        if (knight->returnhp() <= 0)
+        {
+            knight->changeHP(knight->returnmaxhp()/2);
+        }
+        else
+        {
+            knight->changeHP(knight->returnhp() + knight->returnmaxhp()/5);
+        }
+    }
+}
+
+//Antidote
+Antidote::Antidote()
+{
+    itemID = ANTIDOTE;
+}
+
+bool Antidote::canUse(BaseKnight *knight)
+{
+    return knight->returnBag()->antidote > 0;
+}
+
+void Antidote::use(BaseKnight *knight)
+{
+    if (canUse(knight) == true)
+    {
+
+    }
+}
+
+/***END all subclass of BaseItem***/
